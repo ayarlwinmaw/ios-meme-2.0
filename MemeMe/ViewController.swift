@@ -63,24 +63,11 @@ class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavi
         // Add target to Bottom textField
         bottomTextField.addTarget(self, action: #selector(triggerBottomTextField(_:)), for: .touchDown)
         
-        
-        let gesture = UIPanGestureRecognizer(target: self, action: #selector(userDragged(gesture:)))
-           bottomTextField.addGestureRecognizer(gesture)
-        bottomTextField.isUserInteractionEnabled = true
-        
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unsubscribeFromKeyboardNotifications()
-    }
-    
-    @objc func userDragged(gesture: UIPanGestureRecognizer){
-        let loc = gesture.location(in: self.view)
-        self.bottomTextField.center = loc
-        print(loc)
-
     }
     
     // MARK: Pick An Image from Album
@@ -206,12 +193,10 @@ class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavi
               //Completion handler
               avController.completionWithItemsHandler = {(activityType: UIActivity.ActivityType?, completed: Bool, arrayReturnItems: [Any]?, error: Error?) in
                   if completed {
-                      print ("complete")
                       self.saveMeme()
-                      //avController.dismiss(animated: true, completion: nil)
                       return
                   }else{
-                      print ("cancel")
+                      
                   }
                   if let shareError = error {
                       print(shareError)
@@ -262,10 +247,10 @@ class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavi
     func fontPickerViewControllerDidPickFont(_ viewController: UIFontPickerViewController) {
        
         // attempt to read the selected font descriptor, but exit quietly if that fails
-           guard let descriptor = viewController.selectedFontDescriptor else { return }
+        guard let descriptor = viewController.selectedFontDescriptor else { return }
 
-           let font = UIFont(descriptor: descriptor, size: 40)
-           topTextField.font = font
+        let font = UIFont(descriptor: descriptor, size: 40)
+        topTextField.font = font
         bottomTextField.font = font
     }
 }
