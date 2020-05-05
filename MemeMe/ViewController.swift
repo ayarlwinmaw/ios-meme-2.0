@@ -1,6 +1,6 @@
 //
 //  ViewController.swift
-//  MemeMe 1.0
+//  MemeMe 2.0
 //
 //  Created by Ayar Lwin Maw on 5/1/20.
 //  Copyright © 2020 Ayar Maw. All rights reserved.
@@ -30,14 +30,7 @@ class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavi
     var targetBottom:Bool = false
     var memedImage:UIImage? = nil
 
-    // MARK: Meme Struct
-    struct Meme {
-        var topText: String
-        var bottomText: String
-        var originalImage: UIImage!
-        var memedImage: UIImage!
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -180,8 +173,12 @@ class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavi
     func saveMeme(){
         
         let meme = Meme(topText: topTextField.text! , bottomText: bottomTextField.text! , originalImage: imagePickerView.image!, memedImage: memedImage!)
-        print(meme)
+
         
+        // Add it to the memes array in the Application Delegate
+        let object = UIApplication.shared.delegate
+        let appDelegate = object as! AppDelegate
+        appDelegate.memes.append(meme)
     }
     
     // MARK: Share Meme Image

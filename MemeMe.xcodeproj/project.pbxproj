@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		297B1CC02460E3D700B64C7B /* Meme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 297B1CBF2460E3D700B64C7B /* Meme.swift */; };
 		298430F8245C82E10078C1E1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298430F7245C82E10078C1E1 /* AppDelegate.swift */; };
 		298430FA245C82E10078C1E1 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298430F9245C82E10078C1E1 /* SceneDelegate.swift */; };
 		298430FC245C82E10078C1E1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298430FB245C82E10078C1E1 /* ViewController.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		297B1CBF2460E3D700B64C7B /* Meme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meme.swift; sourceTree = "<group>"; };
 		298430F4245C82E10078C1E1 /* MemeMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemeMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		298430F7245C82E10078C1E1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		298430F9245C82E10078C1E1 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 				298430F7245C82E10078C1E1 /* AppDelegate.swift */,
 				298430F9245C82E10078C1E1 /* SceneDelegate.swift */,
 				298430FB245C82E10078C1E1 /* ViewController.swift */,
+				297B1CBF2460E3D700B64C7B /* Meme.swift */,
 				298430FD245C82E10078C1E1 /* Main.storyboard */,
 				29843100245C82E30078C1E1 /* Assets.xcassets */,
 				29843102245C82E30078C1E1 /* LaunchScreen.storyboard */,
@@ -151,6 +154,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				298430FC245C82E10078C1E1 /* ViewController.swift in Sources */,
+				297B1CC02460E3D700B64C7B /* Meme.swift in Sources */,
 				298430F8245C82E10078C1E1 /* AppDelegate.swift in Sources */,
 				298430FA245C82E10078C1E1 /* SceneDelegate.swift in Sources */,
 			);

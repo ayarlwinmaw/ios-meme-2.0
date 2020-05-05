@@ -1,6 +1,6 @@
 //
 //  SceneDelegate.swift
-//  MemeMe 1.0
+//  MemeMe 2.0
 //
 //  Created by Ayar Lwin Maw on 5/1/20.
 //  Copyright © 2020 Ayar Maw. All rights reserved.
