@@ -9,7 +9,8 @@
 import UIKit
 
 class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate, UIFontPickerViewControllerDelegate {
-
+    
+    // MARK: Properties
     @IBOutlet weak var imagePickerView: UIImageView!
     @IBOutlet weak var navBar: UINavigationBar!
     @IBOutlet weak var toolBar: UIToolbar!
@@ -29,8 +30,9 @@ class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavi
     
     var targetBottom:Bool = false
     var memedImage:UIImage? = nil
-
-
+    var editingMeme:Meme? = nil
+    // MARK: Life Cycles
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -41,6 +43,18 @@ class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavi
         self.bottomTextField.defaultTextAttributes = memeTextAttributes
         topTextField.textAlignment = .center
         bottomTextField.textAlignment = .center
+        
+        // Propeties for editing meme
+        if let topText = editingMeme?.topText{
+            topTextField.text = topText
+        }
+        if let bottomText = editingMeme?.bottomText{
+            bottomTextField.text = bottomText
+        }
+        if let originalImage = editingMeme?.originalImage{
+            imagePickerView.image = originalImage
+            shareButton.isEnabled = true
+        }
         
     }
 
@@ -60,16 +74,19 @@ class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavi
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        // To unsubscribe keyboard notifications
         unsubscribeFromKeyboardNotifications()
     }
     
+    // MARK: Functions
+    
     // MARK: Pick An Image from Album
     @IBAction func pickAnImage(_ sender: Any) {
-        
         let pickerController = UIImagePickerController()
         pickerController.delegate = self
         pickerController.sourceType = .photoLibrary
-        pickerController.allowsEditing = true
+        pickerController.modalPresentationStyle = .fullScreen
         present(pickerController, animated: true, completion: nil)
     }
     
@@ -78,16 +95,13 @@ class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavi
         let pickerController = UIImagePickerController()
         pickerController.delegate = self
         pickerController.sourceType = .camera
-       pickerController.allowsEditing = true
-       // pickerController.cameraOverlayView = imagePickerView
         present(pickerController, animated: true, completion: nil)
     }
     
     // MARK: Image Picker Delegate
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        dismiss(animated: true, completion: nil)
+        picker.dismiss(animated: true, completion: nil)
         if let image = info[.editedImage] as? UIImage{
-           // imagePickerView.contentMode = .scaleAspectFit
             imagePickerView.image = image
             self.shareButton.isEnabled = true
         }else if let image = info[.originalImage] as? UIImage{
@@ -97,8 +111,9 @@ class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavi
         }
     }
     
+    // MARK: Image Picker Cancel
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
+        picker.dismiss(animated: true, completion: nil)
     }
     
     // MARK: Textfield Delegate
@@ -171,35 +186,58 @@ class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavi
     
     // MARK: Save Meme
     func saveMeme(){
-        
+        // Create a meme object
         let meme = Meme(topText: topTextField.text! , bottomText: bottomTextField.text! , originalImage: imagePickerView.image!, memedImage: memedImage!)
 
-        
-        // Add it to the memes array in the Application Delegate
+        // Append it to the memes array in the Application Delegate
         let object = UIApplication.shared.delegate
         let appDelegate = object as! AppDelegate
         appDelegate.memes.append(meme)
     }
-    
+   
     // MARK: Share Meme Image
     @IBAction func shareMeme(_ sender: Any) {
-       memedImage = generateMemedImage()
-              let avController = UIActivityViewController(activityItems: [memedImage!], applicationActivities: nil)
-              self.present(avController, animated: true, completion: nil)
-              
-              //Completion handler
-              avController.completionWithItemsHandler = {(activityType: UIActivity.ActivityType?, completed: Bool, arrayReturnItems: [Any]?, error: Error?) in
-                  if completed {
-                      self.saveMeme()
-                      return
-                  }else{
-                      
-                  }
-                  if let shareError = error {
-                      print(shareError)
-                  }
-              }
+
+        // generate meme imaage
+        memedImage = generateMemedImage()
         
+        // prepare items to share
+        let myText = "sent from Meme 2.0"
+        let img: UIImage = memedImage!
+        let shareItems:Array = [img, myText] as [Any]
+        let avController = UIActivityViewController(activityItems: shareItems, applicationActivities: nil)
+        avController.popoverPresentationController?.sourceView = self.view
+        
+        // get a blank transparent view controller
+        let fakeViewController = self.storyboard!.instantiateViewController(identifier: "SavedViewController") as! SavedViewController
+        fakeViewController.modalPresentationStyle = .overFullScreen
+        
+        //Competion Hanlder
+        avController.completionWithItemsHandler = { (activityType: UIActivity.ActivityType?, completed:
+        Bool, arrayReturnedItems: [Any]?, error: Error?) in
+            
+        // presenting a blank transparent view to avoid autmatic showing back to previous view in iOS 13 updates
+            if let presentingViewController = fakeViewController.presentingViewController {
+                // when user cancel share
+                presentingViewController.dismiss(animated: false, completion: nil)
+               
+            } else {
+                print("Share")
+                // when user share
+                fakeViewController.dismiss(animated: false, completion: nil)
+                // to save meme
+                self.saveMeme()
+                // to dimiss the Add New Meme View
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+        
+        // To present asynchronously a blank transparent view and activity view
+        DispatchQueue.main.async {
+            self.present(fakeViewController, animated: false) { [weak fakeViewController] in
+                fakeViewController?.present(avController, animated: true, completion: nil)
+            }
+        }
     }
     
     // MARK: Generate Meme Image
@@ -210,10 +248,16 @@ class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavi
         toolBar.isHidden = true
         
         //Render view to an image
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
+//        UIGraphicsBeginImageContext(self.view.frame.size)
+//        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
+//        let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+//        UIGraphicsEndImageContext()
+        
+        UIGraphicsBeginImageContext(self.imagePickerView.frame.size)
+        view.drawHierarchy(in: self.imagePickerView.frame, afterScreenUpdates: true)
         let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
+        
         
         //unhide ToolBar and NavBar
         navBar.isHidden = false
@@ -222,15 +266,9 @@ class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavi
         return memedImage
     }
     
-    @IBAction func clearCurrentMeme(_ sender: Any) {
-        topTextField.text = "TOP TEXT HERE"
-        bottomTextField.text = "BOTTOM TEXT HERE"
-        imagePickerView.image = nil
-        topTextField.defaultTextAttributes = memeTextAttributes
-        bottomTextField.defaultTextAttributes = memeTextAttributes
-        topTextField.textAlignment = .center
-        bottomTextField.textAlignment = .center
-        
+    // MARK: Cancel Button
+    @IBAction func cancelMeme(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     // MARK: Font Picker
@@ -250,5 +288,5 @@ class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavi
         topTextField.font = font
         bottomTextField.font = font
     }
+    
 }
-
