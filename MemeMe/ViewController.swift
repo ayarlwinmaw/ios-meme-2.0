@@ -86,6 +86,7 @@ class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavi
         let pickerController = UIImagePickerController()
         pickerController.delegate = self
         pickerController.sourceType = .photoLibrary
+        pickerController.allowsEditing = true
         pickerController.modalPresentationStyle = .fullScreen
         present(pickerController, animated: true, completion: nil)
     }
@@ -215,7 +216,8 @@ class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavi
         //Competion Hanlder
         avController.completionWithItemsHandler = { (activityType: UIActivity.ActivityType?, completed:
         Bool, arrayReturnedItems: [Any]?, error: Error?) in
-            
+          
+         // For save image option
         // presenting a blank transparent view to avoid autmatic showing back to previous view in iOS 13 updates
             if let presentingViewController = fakeViewController.presentingViewController {
                 // when user cancel share
@@ -228,6 +230,12 @@ class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavi
                 // to save meme
                 self.saveMeme()
                 // to dimiss the Add New Meme View
+                self.dismiss(animated: true, completion: nil)
+            }
+            
+            // For other share services
+            if completed == true {
+                self.saveMeme()
                 self.dismiss(animated: true, completion: nil)
             }
         }
@@ -248,17 +256,11 @@ class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavi
         toolBar.isHidden = true
         
         //Render view to an image
-//        UIGraphicsBeginImageContext(self.view.frame.size)
-//        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
-//        let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
-//        UIGraphicsEndImageContext()
-        
-        UIGraphicsBeginImageContext(self.imagePickerView.frame.size)
-        view.drawHierarchy(in: self.imagePickerView.frame, afterScreenUpdates: true)
+        UIGraphicsBeginImageContext(self.view.frame.size)
+        view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
         let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-        
-        
+            
         //unhide ToolBar and NavBar
         navBar.isHidden = false
         toolBar.isHidden = false

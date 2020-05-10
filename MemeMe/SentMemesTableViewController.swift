@@ -15,9 +15,15 @@ class SentMemesTableViewController: UITableViewController {
     private lazy var myFunction: Void = {
         let object = UIApplication.shared.delegate
         let appDelegate = object as! AppDelegate
-        appDelegate.memes.append(Meme(topText: "Лорем ипсум долор сит амет хас.", bottomText: "Лорем ипсум долор сит амет вис.", originalImage: #imageLiteral(resourceName: "leonardo"), memedImage: #imageLiteral(resourceName: "leonardo")))
-        appDelegate.memes.append(Meme(topText: "Лорем ипсум долор сит амет ид.", bottomText: "Лорем ипсум долор сит амет афферт.", originalImage: #imageLiteral(resourceName: "april-fool"), memedImage: #imageLiteral(resourceName: "april-fool")))
-        appDelegate.memes.append(Meme(topText: "Лорем ипсум долор сит амет мел.", bottomText: "Лорем ипсум долор сит амет ерос.", originalImage: #imageLiteral(resourceName: "you-mean"), memedImage: #imageLiteral(resourceName: "you-mean")))
+
+        appDelegate.memes.append(Meme(topText: "OIO SÍRË HALDA CELAYUR LÁ, NET ALQUA CAPIË MINYA VI,", bottomText: "UË AMA INYO YELMA HALYAVASARYA", originalImage: #imageLiteral(resourceName: "Futurama-Fry"), memedImage: #imageLiteral(resourceName: "Futurama-Fry")))
+        appDelegate.memes.append(Meme(topText: "모든 국민은 신체의 자유를 가진다", bottomText: "탄핵의 결정, 국가나 국민에게", originalImage: #imageLiteral(resourceName: "Spiderman-Peter-Parker"), memedImage: #imageLiteral(resourceName: "Spiderman-Peter-Parker")))
+        appDelegate.memes.append(Meme(topText: "جديداً مع. دون لم فكانت الغالي, التي مكثّفة محاولات", bottomText: "أن كلا إختار للسيطرة باستحداث. عن", originalImage: #imageLiteral(resourceName: "That-Would-Be-Great"), memedImage: #imageLiteral(resourceName: "That-Would-Be-Great")))
+        appDelegate.memes.append(Meme(topText: "堅こら話地ツイヱヒ田了ロスカ", bottomText: "入ばろ命作ぐてゃト写見書記臓フぐ", originalImage: #imageLiteral(resourceName: "Gana-men"), memedImage: #imageLiteral(resourceName: "Gana-men")))
+        appDelegate.memes.append(Meme(topText: "ЛОРЕМ ИПСУМ ДОЛОР СИТ АМЕТ ХАС", bottomText: "ЛОРЕМ ИПСУМ ДОЛОР СИТ АМЕТ ВИС", originalImage: #imageLiteral(resourceName: "Success-Kid-Original"), memedImage: #imageLiteral(resourceName: "Success-Kid-Original")))
+        appDelegate.memes.append(Meme(topText: "ΛΟΡΕΜ ΙΠΣΘΜ ΔΟΛΟΡ ΣΙΤ ΑΜΕΤ", bottomText: "ΡΕΦΕΡΡΕΝΤΘΡ ΔΕΤΕΡΡΘΙΣΣΕΤ ΕΘΜ ΤΕ", originalImage: #imageLiteral(resourceName: "Leonardo-Dicaprio-Cheers"), memedImage: #imageLiteral(resourceName: "Leonardo-Dicaprio-Cheers")))
+        appDelegate.memes.append(Meme(topText: "အလုပ်ခဏနားခြင်တယ်ပြောလိုက်တယ်", bottomText: "ထွက်စာပါတစ်ခါတည်းတင်လိုက်ရတယ်", originalImage: #imageLiteral(resourceName: "Bad-Luck-Brian"), memedImage: #imageLiteral(resourceName: "Bad-Luck-Brian")))
+        appDelegate.memes.append(Meme(topText: " את חפש הארץ המחשב ", bottomText: "מדע אחרים נוסחאות אל.", originalImage: #imageLiteral(resourceName: "One-Does-Not-Simply"), memedImage: #imageLiteral(resourceName: "One-Does-Not-Simply")))
     }()
     
     // MARK: Meme Array from Appdelegate

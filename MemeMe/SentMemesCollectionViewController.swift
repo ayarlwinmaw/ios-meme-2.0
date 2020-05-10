@@ -33,10 +33,10 @@ class SentMemesCollectionViewController: UICollectionViewController {
         self.memesCount = allMemes.count
         collectionView!.reloadData()
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
         // MARK: Flow Layout dimensions
         let space:CGFloat = 3.0
         let dimension = (view.frame.size.width - (2 * space) - 20) / 3.0
