@@ -82,23 +82,24 @@ class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavi
     // MARK: Functions
     
     // MARK: Pick An Image from Album
-    @IBAction func pickAnImage(_ sender: Any) {
+    @IBAction func pickAnImage(_ sender: UIBarButtonItem) {
         let pickerController = UIImagePickerController()
+        
+        // image picker source according to Button Title
+        if let buttonTitle = sender.title{
+            if buttonTitle == "Album" {
+                pickerController.sourceType = .photoLibrary
+            }else if buttonTitle == "Camera" {
+                pickerController.sourceType = .camera
+            }
+        }
+        
         pickerController.delegate = self
-        pickerController.sourceType = .photoLibrary
         pickerController.allowsEditing = true
         pickerController.modalPresentationStyle = .fullScreen
         present(pickerController, animated: true, completion: nil)
     }
-    
-    // MARK: Take A Picture from Camera
-    @IBAction func takeAnImage(_ sender: Any) {
-        let pickerController = UIImagePickerController()
-        pickerController.delegate = self
-        pickerController.sourceType = .camera
-        present(pickerController, animated: true, completion: nil)
-    }
-    
+
     // MARK: Image Picker Delegate
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true, completion: nil)
@@ -224,17 +225,16 @@ class ViewController: UIViewController,  UIImagePickerControllerDelegate, UINavi
                 presentingViewController.dismiss(animated: false, completion: nil)
                
             } else {
-                print("Share")
+    
                 // when user share
                 fakeViewController.dismiss(animated: false, completion: nil)
-                // to save meme
-                self.saveMeme()
-                // to dimiss the Add New Meme View
+
+                // to dimiss the fake controller View
                 self.dismiss(animated: true, completion: nil)
             }
             
-            // For other share services
-            if completed == true {
+            // To save meme and dismiss Add new Meme View
+            if completed {
                 self.saveMeme()
                 self.dismiss(animated: true, completion: nil)
             }
